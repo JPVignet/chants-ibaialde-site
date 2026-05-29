@@ -65,7 +65,9 @@ a {
 </ul>
 
 <script>
-alert("navigator.serviceWorker = " + navigator.serviceWorker);
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
 </script>
 
 </body>
