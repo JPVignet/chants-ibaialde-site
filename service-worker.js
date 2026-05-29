@@ -1,4 +1,6 @@
-const CACHE_NAME = "chants-cache-v6";
+console.log("Service Worker chargé");
+
+const CACHE_NAME = "chants-cache-v7";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
@@ -354,6 +356,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener("install", event => {
+  console.log("Installation du Service Worker");
 
   event.waitUntil(
 
