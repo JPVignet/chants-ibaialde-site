@@ -65,9 +65,9 @@ a {
 </ul>
 
 <script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-}
+navigator.serviceWorker.register('service-worker.js')
+  .then(() => alert('SW OK'))
+  .catch(err => alert('SW ERREUR : ' + err));
 </script>
 
 </body>
