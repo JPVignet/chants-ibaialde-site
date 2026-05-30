@@ -2,6 +2,7 @@
   "name": "Chants Ibaialde",
   "short_name": "Chants",
   "start_url": "/chants-ibaialde-site/index.html",
+  "scope": "/chants-ibaialde-site/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
