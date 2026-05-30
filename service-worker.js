@@ -1,7 +1,4 @@
-console.log("Service Worker chargé");
-console.log("Origine :", self.location.href);
-
-const CACHE_NAME = "chants-cache-v9";
+const CACHE_NAME = "chants-cache-v10";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
