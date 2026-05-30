@@ -10,6 +10,7 @@ content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#ffffff">
 
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/android/ibaialde-192x192.png">
 
 <style>
 body {
@@ -67,8 +68,9 @@ a {
 </ul>
 
 <script>
-navigator.serviceWorker.register('service-worker.js')
-</script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}</script>
 
 </body>
 </html>
