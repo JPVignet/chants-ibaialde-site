@@ -1,23 +1,37 @@
 <style>
 h1, h2 {
-  font-size: 1.5em;
+  font-size: 3.5em;
   text-align: center;
   line-height: 0.5;
 }
 p {
-  font-size: 1.5em;
+  font-size: 3.5em;
   text-align: center;
   line-height: 0.5;
 }
 h1, h2 {
-  font-size: 1.5em;
+  font-size: 3.5em;
   text-align: center;
   line-height: 0.5;
 }
 h3 {
-  font-size: 1.0em;
+  font-size: 1.5em;
   text-align: center;
   line-height: 0.5;
+}
+
+a {
+  font-size: 3.5em;
+}
+
+.install-info {
+    background: #ffffff;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.95em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 </style>
