@@ -79,10 +79,8 @@ Version cache V1
 
 <script>
 if ('serviceWorker' in navigator) {
-
-  navigator.serviceWorker.register('service-worker.js?v=' + Date.now())
-    .then(reg => reg.update());
-
+  navigator.serviceWorker.getRegistrations()
+    .then(regs => regs.forEach(r => r.unregister()));
 }
 </script>
 
