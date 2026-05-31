@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v12";
+const CACHE_NAME = "chants-cache-v13";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
@@ -397,4 +397,16 @@ self.addEventListener("fetch", event => {
 
   );
 
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames =>
+      Promise.all(
+        cacheNames
+          .filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      )
+    )
+  );
 });
