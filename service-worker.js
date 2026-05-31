@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v16";
+const CACHE_NAME = "chants-cache-v17";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
