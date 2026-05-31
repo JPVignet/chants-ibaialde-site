@@ -19,15 +19,11 @@ h3 {
   line-height: 0.5;
 }
 
-a {
+li a {
     text-decoration: none;
     color: #003366;
-    font-size: 2.0em;
+    font-size: 28px;
     font-weight: bold;
-}
-
-li { 
-     font-size: 2.0em;
 }
 
 .install-info {
