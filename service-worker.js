@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v13";
+const CACHE_NAME = "chants-cache-v14";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
@@ -356,6 +356,8 @@ const urlsToCache = [
 self.addEventListener("install", event => {
   console.log("Installation du Service Worker");
 
+ self.skipWaiting(); 
+
   event.waitUntil(
 
     caches.open(CACHE_NAME).then(async cache => {
@@ -389,18 +391,21 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("fetch", event => {
-
   event.respondWith(
-
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-
+    fetch(event.request)
+      .then(response => {
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
-
 });
 
 self.addEventListener("activate", event => {
+
   event.waitUntil(
+    Promise.all([
+      clients.claim(),   // <-- ajout
+
     caches.keys().then(cacheNames =>
       Promise.all(
         cacheNames
