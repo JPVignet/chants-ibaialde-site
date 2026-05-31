@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v15";
+const CACHE_NAME = "chants-cache-v16";
 
 const urlsToCache = [
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
@@ -353,65 +353,109 @@ const urlsToCache = [
   "style.css"
 ];
 
+/* INSTALLATION */
 self.addEventListener("install", event => {
-  console.log("Installation du Service Worker");
 
- self.skipWaiting(); 
+  console.log("Installation SW :", CACHE_NAME);
+
+  self.skipWaiting();
 
   event.waitUntil(
-
     caches.open(CACHE_NAME).then(async cache => {
 
       for (const url of urlsToCache) {
 
         try {
 
-          const response = await fetch(url);
+          const response = await fetch(url, { cache: "no-cache" });
 
           if (response.ok) {
 
-            await cache.put(url, response);
+            await cache.put(url, response.clone());
 
-            console.log("Cached:", url);
+            console.log("Cache :", url);
 
           }
 
         } catch (err) {
 
-          console.log("Erreur cache:", url, err);
+          console.log("Erreur cache :", url, err);
 
         }
 
       }
 
     })
-
   );
 
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        return response;
-      })
-      .catch(() => caches.match(event.request))
-  );
-});
 
+/* ACTIVATION */
 self.addEventListener("activate", event => {
 
-  event.waitUntil(
-    Promise.all([
-      clients.claim(),   // <-- ajout
+  console.log("Activation SW :", CACHE_NAME);
 
-    caches.keys().then(cacheNames =>
-      Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
+  event.waitUntil(
+
+    Promise.all([
+
+      clients.claim(),
+
+      caches.keys().then(cacheNames =>
+
+        Promise.all(
+
+          cacheNames
+            .filter(name => name !== CACHE_NAME)
+            .map(name => {
+
+              console.log("Suppression ancien cache :", name);
+
+              return caches.delete(name);
+
+            })
+
+        )
+
       )
-    )
+
+    ])
+
   );
+
+});
+
+
+/* REQUÊTES */
+self.addEventListener("fetch", event => {
+
+  if (event.request.method !== "GET") return;
+
+  event.respondWith(
+
+    fetch(event.request)
+
+      .then(response => {
+
+        const responseClone = response.clone();
+
+        caches.open(CACHE_NAME).then(cache => {
+
+          cache.put(event.request, responseClone);
+
+        });
+
+        return response;
+
+      })
+
+      .catch(() => {
+
+        return caches.match(event.request);
+
+      })
+
+  );
+
 });
