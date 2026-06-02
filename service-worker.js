@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v2";
+const CACHE_NAME = "chants-cache-v3";
 
 // Installation : on met en cache les fichiers essentiels
 self.addEventListener("install", event => {
