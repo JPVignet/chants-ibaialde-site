@@ -2,7 +2,7 @@ self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
-const CACHE_NAME = "chants-cache-v5";
+const CACHE_NAME = "chants-cache-v6";
 
 const FILES = [
   "./",
