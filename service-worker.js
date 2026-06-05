@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v2";
+const CACHE_NAME = "chants-cache-v3";
 
 const FILES = [
   "./",
@@ -256,9 +256,20 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(FILES);
-    })
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      for (const url of FILES) {
+        try {
+          const response = await fetch(url, { cache: "reload" });
+          if (response && response.ok) {
+            await cache.put(url, response);
+          }
+        } catch (e) {
+          console.log("Erreur cache fichier :", url);
+        }
+      }
+    })()
   );
 });
 
