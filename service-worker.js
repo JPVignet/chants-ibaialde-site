@@ -263,6 +263,8 @@ self.addEventListener("activate", event => {
       const keys = await caches.keys();
       await Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)));
       await self.clients.claim();
+      self.skipWaiting();
+      self.clients.claim();
     })()
   );
 });
