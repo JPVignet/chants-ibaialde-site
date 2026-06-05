@@ -1,3 +1,7 @@
+self.addEventListener("install", () => {
+  self.skipWaiting();
+});
+
 const CACHE_NAME = "chants-cache-v5";
 
 const FILES = [
@@ -260,11 +264,9 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(
     (async () => {
-      const keys = await caches.keys();
-      await Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)));
       await self.clients.claim();
-      self.skipWaiting();
-      self.clients.claim();
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
     })()
   );
 });
