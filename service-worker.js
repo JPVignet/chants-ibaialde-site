@@ -1,11 +1,10 @@
-const CACHE_NAME = "chants-cache-v3";
+const CACHE_NAME = "chants-cache-v4";
 
 const FILES = [
   "./",
   "index.html",
   "style.css",
 
-  // pages principales
   "Chants_Basques_html/index.html",
   "Chants_Gascons_html/index.html",
   "Chants_Francophones_html/index.html",
@@ -248,45 +247,21 @@ const FILES = [
   "Chants_Gascons_html/index.html",
   "Chants_Gascons_html/style.css",
 
-
-
 ];
 
 self.addEventListener("install", event => {
   self.skipWaiting();
 
   event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-
-      for (const url of FILES) {
-        try {
-          const response = await fetch(url, { cache: "reload" });
-          if (response && response.ok) {
-            await cache.put(url, response);
-          }
-        } catch (e) {
-          console.log("Erreur cache fichier :", url);
-        }
-      }
-    })()
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES))
   );
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
     (async () => {
-      // supprime anciens caches
       const keys = await caches.keys();
-
-      await Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-
+      await Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)));
       await self.clients.claim();
     })()
   );
@@ -297,22 +272,7 @@ self.addEventListener("fetch", event => {
 
   event.respondWith(
     caches.match(event.request).then(cached => {
-      if (cached) return cached;
-
-      return fetch(event.request)
-        .then(response => {
-          const copy = response.clone();
-
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, copy);
-          });
-
-          return response;
-        })
-        .catch(() => {
-          // offline fallback silencieux
-          return caches.match("./");
-        });
+      return cached || fetch(event.request);
     })
   );
 });
