@@ -1,8 +1,4 @@
-self.addEventListener("install", () => {
-  self.skipWaiting();
-});
-
-const CACHE_NAME = "chants-cache-v6";
+const CACHE_NAME = "chants-cache-v7";
 
 const FILES = [
   "./",
@@ -255,10 +251,6 @@ const FILES = [
 
 self.addEventListener("install", event => {
   self.skipWaiting();
-
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES))
-  );
 });
 
 self.addEventListener("activate", event => {
