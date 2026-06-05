@@ -1,5 +1,9 @@
-const CACHE_NAME = "chants-cache-v7";
+const CACHE_NAME = "chants-cache-v8";
 
+/**
+ * ⚠️ LISTE COMPLETE DES FICHIERS A METTRE EN OFFLINE
+ * (index + catégories + 225 chants)
+ */
 const FILES = [
   "./",
   "index.html",
@@ -12,7 +16,6 @@ const FILES = [
   "Chants_Creoles_html/index.html",
   "Chants_Corses_html/index.html",
 
-  // 
 
   "Chants_Basques_html/ABENTURAZ_ABENTURA.html",
   "Chants_Basques_html/ABERRIAREN_MUGAK.html",
@@ -247,28 +250,79 @@ const FILES = [
   "Chants_Gascons_html/index.html",
   "Chants_Gascons_html/style.css",
 
+
 ];
 
 self.addEventListener("install", event => {
   self.skipWaiting();
+
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      // 🔥 préchargement robuste fichier par fichier
+      for (const url of FILES) {
+        try {
+          const response = await fetch(url, { cache: "reload" });
+
+          if (response && response.ok) {
+            await cache.put(url, response);
+          } else {
+            console.warn("skip fichier:", url);
+          }
+        } catch (e) {
+          console.warn("erreur fichier:", url);
+        }
+      }
+    })()
+  );
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
     (async () => {
-      await self.clients.claim();
       const keys = await caches.keys();
-      await Promise.all(keys.map(k => caches.delete(k)));
+
+      await Promise.all(
+        keys.map(k => {
+          if (k !== CACHE_NAME) {
+            return caches.delete(k);
+          }
+        })
+      );
+
+      await self.clients.claim();
     })()
   );
 });
 
+/**
+ * STRATÉGIE OFFLINE FIABLE :
+ * - cache si dispo
+ * - sinon réseau
+ * - et on enrichit le cache progressivement
+ */
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request);
-    })
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+
+      try {
+        const response = await fetch(event.request);
+
+        if (response && response.ok) {
+          cache.put(event.request, response.clone());
+        }
+
+        return response;
+      } catch (e) {
+        return cached;
+      }
+    })()
   );
 });
