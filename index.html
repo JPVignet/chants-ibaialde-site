@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 18h20
+Version du 08-06-2026 - 18h30
 </p>
 
 <script>
@@ -142,43 +142,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const btn = document.getElementById("downloadBtn");
   const text = document.getElementById("progressText");
-  const bar = document.getElementById("bar");
 
   btn.addEventListener("click", async () => {
 
-    text.textContent = "Vérification en cours...";
-    bar.style.width = "20%";
+    const cacheNames = await caches.keys();
 
-    try {
+    let msg = "";
 
-      // 🔥 on récupère TOUS les caches
-const cacheNames = await caches.keys();
+    for (const name of cacheNames) {
 
-alert(
-  "Caches trouvés :\n" +
-  cacheNames.join("\n")
-);
+      const cache = await caches.open(name);
+      const keys = await cache.keys();
 
-      // 🔥 on filtre les chants
-     const chants = allFiles.filter(r =>
-  r.url.endsWith(".html")
-);
-
-      console.log("CHANTS TROUVÉS :", chants.length);
-
-      bar.style.width = "100%";
-      text.textContent = chants.length + " chants disponibles hors connexion";
-
-    } catch (e) {
-      console.error(e);
-      text.textContent = "Erreur lors de la vérification";
+      msg += name + " : " + keys.length + " fichiers\n";
     }
 
+    alert(msg);
+
+    text.textContent = msg;
   });
 
 });
-</script>
-<script>
+</script><script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const btn = document.getElementById("downloadBtn");
