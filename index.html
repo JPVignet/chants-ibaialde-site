@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 18h05
+Version du 08-06-2026 - 18h20
 </p>
 
 <script>
@@ -206,8 +206,11 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     bar.style.width = "100%";
-    text.textContent = chants.length + " chants hors connexion";
-
+text.textContent =
+  chants.length +
+  " chants hors connexion (clic à " +
+  new Date().toLocaleTimeString() +
+  ")";
   });
 
 });
