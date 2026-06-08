@@ -110,17 +110,27 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
+<script>
 document.getElementById("downloadBtn")
   .addEventListener("click", async () => {
 
     const status = document.getElementById("status");
 
-    const cache = await caches.open("chants-cache-v1");
-    const keys = await cache.keys();
+    try {
+      const cache = await caches.open("chants-cache-v1");
+      const keys = await cache.keys();
 
-    status.textContent = "Fichiers dans cache : " + keys.length;
+      status.textContent = "Fichiers dans cache : " + keys.length;
 
-    console.log(keys);
+      console.log(keys);
 
-  });</body>
+    } catch (e) {
+      console.error(e);
+      status.textContent = "Erreur lecture cache";
+    }
+
+  });
+</script>
+
+</body>
 </html>
