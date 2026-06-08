@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 17h45
+Version du 08-06-2026 - 18h05
 </p>
 
 <script>
@@ -152,15 +152,12 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
 
       // 🔥 on récupère TOUS les caches
-      const cacheNames = await caches.keys();
+const cacheNames = await caches.keys();
 
-      let allFiles = [];
-
-      for (const name of cacheNames) {
-        const cache = await caches.open(name);
-        const keys = await cache.keys();
-        allFiles = allFiles.concat(keys);
-      }
+alert(
+  "Caches trouvés :\n" +
+  cacheNames.join("\n")
+);
 
       // 🔥 on filtre les chants
      const chants = allFiles.filter(r =>

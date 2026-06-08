@@ -1,4 +1,4 @@
-const CACHE_NAME = "chants-cache-v29";
+const CACHE_NAME = "chants-cache-v30";
 
 /**
  * ⚠️ LISTE COMPLETE DES FICHIERS A METTRE EN OFFLINE
