@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 18h40
+Version du 08-06-2026 - 18h50
 </p>
 
 <script>
@@ -135,35 +135,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-</script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const btn = document.getElementById("downloadBtn");
-  const text = document.getElementById("progressText");
-
-  btn.addEventListener("click", async () => {
-
-    const cacheNames = await caches.keys();
-
-    let msg = "";
-
-    for (const name of cacheNames) {
-
-      const cache = await caches.open(name);
-      const keys = await cache.keys();
-
-      msg += name + " : " + keys.length + " fichiers\n";
-    }
-
-    alert(msg);
-
-    text.textContent = msg;
-  });
-
-});
-</script><script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const btn = document.getElementById("downloadBtn");
