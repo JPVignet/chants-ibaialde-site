@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 18h30
+Version du 08-06-2026 - 18h40
 </p>
 
 <script>
@@ -170,7 +170,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const text = document.getElementById("progressText");
   const bar = document.getElementById("bar");
 
-  btn.addEventListener("click", async () => {
+let verificationEnCours = false;
+
+btn.addEventListener("click", async () => {
+
+  if (verificationEnCours) return;
+
+  verificationEnCours = true;
 
     text.textContent = "Vérification en cours...";
     bar.style.width = "20%";
@@ -196,6 +202,7 @@ text.textContent =
   " chants hors connexion (clic à " +
   new Date().toLocaleTimeString() +
   ")";
+verificationEnCours = false;
   });
 
 });
