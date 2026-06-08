@@ -84,8 +84,8 @@ a {
             border-radius:10px;
             cursor:pointer;
           ">
-    Télécharger tous les chants
-  </button>
+   Vérifier les chants hors connexion 
+ </button>
 
   <div id="status"
        style="
@@ -99,7 +99,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - TEST BOUTON
+Version du 08-06-2026
 </p>
 
 <script>
@@ -112,14 +112,33 @@ if ('serviceWorker' in navigator) {
 
 <script>
 document.getElementById("downloadBtn")
-  .addEventListener("click", () => {
+  .addEventListener("click", async () => {
 
-    document.getElementById("status").textContent =
-      "Fonction de téléchargement en préparation...";
+    const status = document.getElementById("status");
 
-});
+    status.textContent = "Vérification du cache en cours...";
 
+    try {
+      const cache = await caches.open("chants-cache-v1");
+
+      const keys = await cache.keys();
+
+      const chants = keys.filter(req =>
+        req.url.includes(".html") &&
+        req.url.includes("Chants_")
+      );
+
+      const total = 227;
+
+      status.textContent =
+        `${chants.length} / ${total} chants disponibles hors connexion`;
+
+    } catch (e) {
+      status.textContent =
+        "Impossible de vérifier le cache";
+    }
+
+  });
 </script>
-
 </body>
 </html>
