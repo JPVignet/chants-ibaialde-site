@@ -74,6 +74,30 @@ a {
 
 </ul>
 
+<div style="text-align:center; margin-top:40px;">
+
+  <button id="downloadBtn"
+          style="
+            padding:12px 20px;
+            font-size:16px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+          ">
+    Télécharger tous les chants
+  </button>
+
+  <div id="status"
+       style="
+         margin-top:15px;
+         font-size:14px;
+         color:#444;
+       ">
+  </div>
+
+</div>
+
+
 <p style="font-size:10px;color:#888;text-align:center">
 Version du 05-06-2026 - 11h35
 </p>
@@ -84,6 +108,17 @@ if ('serviceWorker' in navigator) {
     updateViaCache: 'none'
   });
 }
+</script>
+
+<script>
+document.getElementById("downloadBtn")
+  .addEventListener("click", () => {
+
+    document.getElementById("status").textContent =
+      "Fonction de téléchargement en préparation...";
+
+});
+
 </script>
 
 </body>
