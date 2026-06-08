@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 18h50
+Version du 08-06-2026 - 19h00
 </p>
 
 <script>
@@ -143,42 +143,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const text = document.getElementById("progressText");
   const bar = document.getElementById("bar");
 
-let verificationEnCours = false;
+  if (!btn) {
+    console.error("Bouton introuvable");
+    return;
+  }
 
-btn.addEventListener("click", async () => {
-
-  if (verificationEnCours) return;
-
-  verificationEnCours = true;
+  btn.addEventListener("click", async () => {
 
     text.textContent = "Vérification en cours...";
     bar.style.width = "20%";
 
-    const cacheNames = await caches.keys();
+    try {
 
-    let allFiles = [];
+      const cacheNames = await caches.keys();
 
-    for (const name of cacheNames) {
-      const cache = await caches.open(name);
-      const keys = await cache.keys();
-      allFiles = allFiles.concat(keys);
+      let allFiles = [];
+
+      for (const name of cacheNames) {
+        const cache = await caches.open(name);
+        const keys = await cache.keys();
+        allFiles = allFiles.concat(keys);
+      }
+
+      const chants = allFiles.filter(r =>
+        r.url.includes("_html/") &&
+        r.url.endsWith(".html")
+      );
+
+      bar.style.width = "100%";
+
+      text.textContent =
+        chants.length +
+        " chants hors connexion";
+
+    } catch (e) {
+      console.error(e);
+      text.textContent = "Erreur vérification";
     }
 
-    const chants = allFiles.filter(r =>
-      r.url.includes("_html/") &&
-      r.url.endsWith(".html")
-    );
-
-    bar.style.width = "100%";
-text.textContent =
-  chants.length +
-  " chants hors connexion (clic à " +
-  new Date().toLocaleTimeString() +
-  ")";
-verificationEnCours = false;
   });
 
 });
+
 </script>
 
 </body>
