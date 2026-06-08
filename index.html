@@ -116,18 +116,19 @@ document.getElementById("downloadBtn")
 
     const status = document.getElementById("status");
 
-    try {
-      const cache = await caches.open("chants-cache-v1");
-      const keys = await cache.keys();
+    const keys = await caches.keys();
+    console.log("CACHE LIST :", keys);
 
-      status.textContent = "Fichiers dans cache : " + keys.length;
+    let total = 0;
 
-      console.log(keys);
-
-    } catch (e) {
-      console.error(e);
-      status.textContent = "Erreur lecture cache";
+    for (const name of keys) {
+      const cache = await caches.open(name);
+      const items = await cache.keys();
+      console.log(name, items.length);
+      total += items.length;
     }
+
+    status.textContent = "Total fichiers dans tous les caches : " + total;
 
   });
 </script>
