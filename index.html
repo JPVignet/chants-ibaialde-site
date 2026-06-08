@@ -112,7 +112,7 @@ a {
 
 
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 08-06-2026 - 19h00
+Version du 08-06-2026 - 19h05
 </p>
 
 <script>
@@ -143,43 +143,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const text = document.getElementById("progressText");
   const bar = document.getElementById("bar");
 
-  if (!btn) {
-    console.error("Bouton introuvable");
+  if (!btn || !text || !bar) {
+    console.error("Elements UI manquants");
     return;
   }
 
+  let running = false;
+
   btn.addEventListener("click", async () => {
 
-    text.textContent = "Vérification en cours...";
-    bar.style.width = "20%";
+    if (running) return;
+    running = true;
 
     try {
 
+      text.textContent = "Vérification en cours...";
+      bar.style.width = "20%";
+
       const cacheNames = await caches.keys();
 
-      let allFiles = [];
+      let files = [];
 
       for (const name of cacheNames) {
         const cache = await caches.open(name);
         const keys = await cache.keys();
-        allFiles = allFiles.concat(keys);
+        files = files.concat(keys);
       }
 
-      const chants = allFiles.filter(r =>
-        r.url.includes("_html/") &&
-        r.url.endsWith(".html")
+      const chants = files.filter(req =>
+        req.url.includes("Chants_") &&
+        req.url.endsWith(".html")
       );
 
       bar.style.width = "100%";
 
       text.textContent =
         chants.length +
-        " chants hors connexion";
+        " chants disponibles hors connexion";
+
+      console.log("CHANTS DETECTES :", chants.length);
 
     } catch (e) {
       console.error(e);
-      text.textContent = "Erreur vérification";
+      text.textContent = "Erreur de vérification";
     }
+
+    running = false;
 
   });
 
