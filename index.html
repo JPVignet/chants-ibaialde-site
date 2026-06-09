@@ -74,8 +74,45 @@ a {
 
 </ul>
 
+<div style="text-align:center; margin-top:40px;">
+
+  <button id="downloadBtn"
+          style="
+            padding:12px 20px;
+            font-size:16px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+          ">
+   Vérifier les chants disponibles hors connexion 
+
+ </button>
+
+<div style="width:100%; max-width:400px; margin:20px auto;">
+
+  <div style="background:#ddd; height:18px; border-radius:10px; overflow:hidden;">
+    <div id="bar" style="height:100%; width:0%; background:#2d6cdf;"></div>
+  </div>
+
+  <div id="progressText" style="text-align:center; margin-top:8px; font-size:14px;">
+    Prêt
+  </div>
+
+</div>
+
+  <div id="status"
+       style="
+         margin-top:15px;
+         font-size:14px;
+         color:#444;
+       ">
+  </div>
+
+</div>
+
+
 <p style="font-size:10px;color:#888;text-align:center">
-Version du 09-06-2026 - 14h30
+Version du 09-06-2026 - 16h30
 </p>
 
 <script>
@@ -85,6 +122,52 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
+<script>
+document.getElementById("downloadBtn")
+  .addEventListener("click", async () => {
+
+    const status = document.getElementById("status");
+
+    try {
+      const keys = await caches.keys();
+
+      let chants = [];
+
+      for (const cacheName of keys) {
+        const cache = await caches.open(cacheName);
+        const requests = await cache.keys();
+
+        for (const req of requests) {
+          const url = req.url;
+
+          // 🎯 uniquement les chants
+          if (
+            url.includes("_html/") &&
+            url.endsWith(".html") &&
+            !url.includes("index.html")
+          ) {
+            chants.push(url);
+          }
+        }
+      }
+
+      // enlever doublons éventuels
+      const unique = [...new Set(chants)];
+
+      const total = 220;
+
+      status.textContent =
+        `${unique.length} / ${total} chants disponibles hors connexion`;
+
+    } catch (e) {
+      console.error(e);
+      status.textContent = "Erreur lecture cache";
+    }
+
+  });
+</script>
+
 
 </body>
 </html>
