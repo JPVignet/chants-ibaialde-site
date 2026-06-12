@@ -10,6 +10,7 @@ const FILES = [
   "style.css",
 
   "Chants_Basques_html/index.html",
+  "Chants_Basques_pdf/index.html",
   "Chants_Gascons_html/index.html",
   "Chants_Francophones_html/index.html",
   "Chants_Espagnols_html/index.html",
@@ -162,6 +163,8 @@ const FILES = [
   "Chants_Basques_html/Zurekin_batera.html",
   "Chants_Basques_html/index.html",
   "Chants_Basques_html/style.css",
+  "Chants_Basques_pdf/Agur_Jaunak.pdf",
+  "Chants_Basques_pdf/Ardiak_Lerro_Lerro.pdf",
   "Chants_Corses_html/COMPANERO.html",
   "Chants_Corses_html/VOLE.html",
   "Chants_Corses_html/index.html",
