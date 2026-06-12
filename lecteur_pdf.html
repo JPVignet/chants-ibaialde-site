@@ -27,7 +27,7 @@ iframe {
 const params = new URLSearchParams(window.location.search);
 const fichier = params.get("file");
 
-document.getElementById("pdfFrame").src = fichier;
+window.location.replace(fichier);
 </script>
 
 </body>
